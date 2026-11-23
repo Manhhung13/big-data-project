@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+.dist/
+.env
+local-data/
+logs/
+reports/runtime/
+*.log
+.DS_Store
+
+# local backups / old hotfix bundles (kept locally, not versioned)
+*.bak_*
+*.zip
+*.tgz
+_b1fix/
+_b2v5/
+_b2v5_1/
+apply_*.py
+HOTFIX_README.md

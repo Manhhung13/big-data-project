@@ -1,0 +1,48 @@
+{
+  "dataset": "news_stock_mapping",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "article_id",
+      "type_code": "s"
+    },
+    {
+      "name": "symbol",
+      "type_code": "s"
+    },
+    {
+      "name": "rule_id",
+      "type_code": "s"
+    },
+    {
+      "name": "matched_alias",
+      "type_code": "s"
+    },
+    {
+      "name": "relevance",
+      "type_code": "d"
+    },
+    {
+      "name": "mapping_version",
+      "type_code": "s"
+    },
+    {
+      "name": "publish_date",
+      "type_code": "date"
+    }
+  ]
+}

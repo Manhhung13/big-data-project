@@ -1,0 +1,40 @@
+{
+  "dataset": "quarantine",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "dataset",
+      "type_code": "s"
+    },
+    {
+      "name": "reason_code",
+      "type_code": "s"
+    },
+    {
+      "name": "source_record_key",
+      "type_code": "s"
+    },
+    {
+      "name": "raw_payload",
+      "type_code": "bin"
+    },
+    {
+      "name": "record_date",
+      "type_code": "date"
+    }
+  ]
+}

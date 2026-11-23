@@ -1,0 +1,46 @@
+project:
+  environment: test
+  timezone: Asia/Ho_Chi_Minh
+  data_root: file:///tmp/stock-batch-tests
+  schema_version: '1.0'
+market:
+  feature_minutes: 5
+  valid_price_units: {VND: 1.0, THOUSAND_VND: 1000.0}
+  source_priority: {provider_a: 1, provider_b: 2}
+  calendar_file: reference/trading_calendar.csv
+  symbol_file: reference/symbol_master.csv
+news:
+  windows_minutes: [5, 30, 60]
+  min_relevance: 0.0
+  trusted_only: true
+  mapping_version: m1
+  duplicate_group_policy: content_hash   # content_hash | article (see ADR-05)
+baseline:
+  train_trading_days: 60
+  min_samples: 2
+  z_threshold: 3.0
+  min_news_for_burst: 1
+  min_volume_for_percentile: 1
+  publish_min_usable_ratio: 0.5   # share of READY/ZERO_STD cohorts required to publish
+  version_prefix: bl
+  formula_version: f1
+batch:
+  event_merge_gap_minutes: 10
+  rule_version: r1
+  analysis_version: a1
+  log_level: INFO
+  fail_on_empty: false
+  max_driver_rows: 5000
+spark:
+  master: local[2]
+  shuffle_partitions: 2
+  compression: snappy
+storage:
+  max_records_per_file: 5000000
+  small_file_bytes: 16777216
+  gc_keep_generations: 5
+  gc_min_age_hours: 0
+  gc_keep_success_runs: null          # null = keep every SUCCESS run (rollback targets)
+kafka:
+  stock_topic: stock-price-topic
+  news_topic: news-topic

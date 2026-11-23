@@ -1,0 +1,60 @@
+# Windows PowerShell: docker compose up -d namenode datanode; docker compose run --rm spark-job ...
+# All run commands must be on one line. DO NOT paste bash trailing backslashes in PowerShell.
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    environment:
+      CLUSTER_NAME: stock-lake
+      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+      HDFS_CONF_dfs_replication: '1'
+    ports: ['9870:9870','8020:8020']
+    volumes: [namenode_data:/hadoop/dfs/name]
+    healthcheck:
+      test: ['CMD-SHELL','curl -fsS http://localhost:9870/ >/dev/null']
+      interval: 15s
+      timeout: 5s
+      retries: 15
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    depends_on: [namenode]
+    environment:
+      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+      SERVICE_PRECONDITION: namenode:9870
+      HDFS_CONF_dfs_replication: '1'
+    ports: ['9864:9864']
+    volumes: [datanode_data:/hadoop/dfs/data]
+  kafka:
+    image: apache/kafka:3.9.0   # verified by scripts/smoke/smoke_kafka.py
+    profiles: ['kafka']
+    hostname: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  spark-job:
+    build:
+      context: .
+      dockerfile: docker/images/Dockerfile
+    depends_on: [namenode,datanode]
+    working_dir: /opt/project
+    environment:
+      DATA_ROOT: hdfs://namenode:8020/data
+      SPARK_LOCAL_IP: 127.0.0.1
+      PYTHONPATH: /opt/project/src:/opt/spark/python:/opt/spark/python/lib/pyspark.zip:/opt/spark/python/lib/py4j-0.10.9.7-src.zip
+      PYSPARK_PYTHON: python3
+      HOME: /tmp
+    command: ['--env','dev','validate-config']
+    entrypoint: ['python3','-m','stock_batch.cli']
+    volumes:
+      - ./reference:/opt/project/reference:ro
+      - ./configs:/opt/project/configs:ro
+    profiles: ['tools']
+volumes:
+  namenode_data: {}
+  datanode_data: {}

@@ -1,0 +1,11 @@
+exchange,trading_date,session_id,session_start,session_end,is_trading_day,calendar_version
+HOSE,2026-10-01,morning,09:00,11:30,true,cal_demo_1
+HOSE,2026-10-01,afternoon,13:00,14:45,true,cal_demo_1
+HOSE,2026-10-02,morning,09:00,11:30,true,cal_demo_1
+HOSE,2026-10-02,afternoon,13:00,14:45,true,cal_demo_1
+HOSE,2026-10-05,morning,09:00,11:30,true,cal_demo_1
+HOSE,2026-10-05,afternoon,13:00,14:45,true,cal_demo_1
+HOSE,2026-10-06,morning,09:00,11:30,true,cal_demo_1
+HOSE,2026-10-06,afternoon,13:00,14:45,true,cal_demo_1
+HOSE,2026-10-07,morning,09:00,11:30,true,cal_demo_1
+HOSE,2026-10-07,afternoon,13:00,14:45,true,cal_demo_1

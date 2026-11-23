@@ -1,0 +1,88 @@
+{
+  "dataset": "stock_price",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "symbol",
+      "type_code": "s"
+    },
+    {
+      "name": "exchange",
+      "type_code": "s"
+    },
+    {
+      "name": "bar_start",
+      "type_code": "t"
+    },
+    {
+      "name": "bar_end",
+      "type_code": "t"
+    },
+    {
+      "name": "trade_date",
+      "type_code": "date"
+    },
+    {
+      "name": "session_id",
+      "type_code": "s"
+    },
+    {
+      "name": "open",
+      "type_code": "money"
+    },
+    {
+      "name": "high",
+      "type_code": "money"
+    },
+    {
+      "name": "low",
+      "type_code": "money"
+    },
+    {
+      "name": "close",
+      "type_code": "money"
+    },
+    {
+      "name": "volume",
+      "type_code": "l"
+    },
+    {
+      "name": "source",
+      "type_code": "s"
+    },
+    {
+      "name": "source_unit",
+      "type_code": "s"
+    },
+    {
+      "name": "quality_flag",
+      "type_code": "s"
+    },
+    {
+      "name": "source_record_key",
+      "type_code": "s"
+    },
+    {
+      "name": "schema_version",
+      "type_code": "s"
+    },
+    {
+      "name": "processed_at",
+      "type_code": "t"
+    }
+  ]
+}

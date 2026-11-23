@@ -1,0 +1,44 @@
+{
+  "dataset": "bronze_bad_records",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "topic",
+      "type_code": "s"
+    },
+    {
+      "name": "partition",
+      "type_code": "i"
+    },
+    {
+      "name": "offset",
+      "type_code": "l"
+    },
+    {
+      "name": "ingest_date",
+      "type_code": "date"
+    },
+    {
+      "name": "raw_payload",
+      "type_code": "bin"
+    },
+    {
+      "name": "reason_code",
+      "type_code": "s"
+    }
+  ]
+}

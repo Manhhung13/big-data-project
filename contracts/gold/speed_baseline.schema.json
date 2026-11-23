@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Published baseline pointer for the Speed Layer (_system/baselines/current.json), v2",
+  "description": "Replaced atomically by `publish-baseline`. The rows live in the immutable Parquet export at export_path (row contract: speed_baseline_rows.schema.json). Every published pointer is also kept in _system/baselines/history/.",
+  "type": "object",
+  "required": ["baseline_version", "valid_for_trading_date", "train_end", "row_count", "status_counts",
+               "usable_ratio", "catalog_generation", "source_run_id", "status", "dataset_partitions",
+               "export_path", "schema_version", "published_at"],
+  "properties": {
+    "baseline_version": {"type": "string", "pattern": "^[A-Za-z0-9]+_\\d{4}-\\d{2}-\\d{2}_[0-9a-f]{8}_[0-9a-f]{8}$",
+                         "description": "<prefix>_<valid date>_<business config hash>_<content hash>; content-addressed"},
+    "valid_for_trading_date": {"type": "string", "format": "date"},
+    "train_end": {"type": "string", "format": "date", "description": "always < valid_for_trading_date"},
+    "row_count": {"type": "integer", "minimum": 1},
+    "status_counts": {"type": "object", "propertyNames": {"enum": ["READY", "ZERO_STD", "SPARSE"]},
+                      "additionalProperties": {"type": "integer", "minimum": 0}},
+    "usable_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+    "catalog_generation": {"type": "integer", "minimum": 0},
+    "catalog_path": {"type": "string"},
+    "source_run_id": {"type": ["string", "null"]},
+    "status": {"const": "PUBLISHED"},
+    "dataset_partitions": {"type": "object", "additionalProperties": {"type": "string"}},
+    "export_path": {"type": "string"},
+    "export_format": {"const": "parquet"},
+    "schema_version": {"type": "string"},
+    "code_version": {"type": "string"},
+    "published_at": {"type": "string", "format": "date-time"},
+    "previous_version": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

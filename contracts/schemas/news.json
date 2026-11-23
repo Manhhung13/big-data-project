@@ -1,0 +1,80 @@
+{
+  "dataset": "news",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "article_id",
+      "type_code": "s"
+    },
+    {
+      "name": "canonical_url",
+      "type_code": "s"
+    },
+    {
+      "name": "content_hash",
+      "type_code": "s"
+    },
+    {
+      "name": "title",
+      "type_code": "s"
+    },
+    {
+      "name": "content_text",
+      "type_code": "s"
+    },
+    {
+      "name": "source",
+      "type_code": "s"
+    },
+    {
+      "name": "published_at",
+      "type_code": "t"
+    },
+    {
+      "name": "crawled_at",
+      "type_code": "t"
+    },
+    {
+      "name": "time_quality",
+      "type_code": "s"
+    },
+    {
+      "name": "publish_date",
+      "type_code": "date"
+    },
+    {
+      "name": "duplicate_group",
+      "type_code": "s"
+    },
+    {
+      "name": "source_record_key",
+      "type_code": "s"
+    },
+    {
+      "name": "schema_version",
+      "type_code": "s"
+    },
+    {
+      "name": "rights_policy",
+      "type_code": "s"
+    },
+    {
+      "name": "raw_html_ref",
+      "type_code": "s"
+    }
+  ]
+}

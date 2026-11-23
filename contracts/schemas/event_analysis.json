@@ -1,0 +1,88 @@
+{
+  "dataset": "event_analysis",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "event_id",
+      "type_code": "s"
+    },
+    {
+      "name": "event_date",
+      "type_code": "date"
+    },
+    {
+      "name": "horizon",
+      "type_code": "s"
+    },
+    {
+      "name": "return_before",
+      "type_code": "d"
+    },
+    {
+      "name": "return_after",
+      "type_code": "d"
+    },
+    {
+      "name": "volume_z_at_event",
+      "type_code": "d"
+    },
+    {
+      "name": "news_count_before",
+      "type_code": "l"
+    },
+    {
+      "name": "news_count_after",
+      "type_code": "l"
+    },
+    {
+      "name": "cooccurrence_type",
+      "type_code": "s"
+    },
+    {
+      "name": "is_complete",
+      "type_code": "b"
+    },
+    {
+      "name": "missing_reason",
+      "type_code": "s"
+    },
+    {
+      "name": "analysis_version",
+      "type_code": "s"
+    },
+    {
+      "name": "source_snapshot",
+      "type_code": "s"
+    },
+    {
+      "name": "run_id",
+      "type_code": "s"
+    },
+    {
+      "name": "code_version",
+      "type_code": "s"
+    },
+    {
+      "name": "config_hash",
+      "type_code": "s"
+    },
+    {
+      "name": "processing_timestamp",
+      "type_code": "t"
+    }
+  ]
+}

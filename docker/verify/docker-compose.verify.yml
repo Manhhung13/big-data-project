@@ -1,0 +1,66 @@
+# Isolated verification stack. ALWAYS run with its own project name, e.g.
+#   docker compose -p stockbatch-verify -f docker/verify/docker-compose.verify.yml up -d
+# It publishes NO host ports and uses its own volumes (stockbatch-verify_*), so it never touches the
+# dev stack's HDFS data (stock-batch-layer_namenode_data / _datanode_data) or other projects.
+# Tear down with: docker compose -p stockbatch-verify -f docker/verify/docker-compose.verify.yml down -v
+name: stockbatch-verify
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    hostname: namenode
+    environment:
+      CLUSTER_NAME: stockbatch-verify
+      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+      HDFS_CONF_dfs_replication: '1'
+      HDFS_CONF_dfs_permissions_enabled: 'false'
+    volumes: [verify_namenode:/hadoop/dfs/name]
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fsS http://localhost:9870/ >/dev/null']
+      interval: 5s
+      timeout: 5s
+      retries: 40
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    hostname: datanode
+    depends_on: [namenode]
+    environment:
+      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+      SERVICE_PRECONDITION: namenode:9870
+      HDFS_CONF_dfs_replication: '1'
+      HDFS_CONF_dfs_permissions_enabled: 'false'
+    volumes: [verify_datanode:/hadoop/dfs/data]
+  kafka:
+    image: apache/kafka:3.9.0
+    hostname: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+  spark:
+    image: ${SPARK_IMAGE:-stock-batch-layer-spark-job:latest}
+    profiles: ['run']
+    depends_on: [namenode, datanode, kafka]
+    user: '185'
+    working_dir: /opt/project
+    environment:
+      HOME: /tmp
+      SPARK_LOCAL_IP: 127.0.0.1
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONPATH: /opt/project/src:/opt/spark/python:/opt/spark/python/lib/pyspark.zip:/opt/spark/python/lib/py4j-0.10.9.7-src.zip
+      HDFS_ROOT: hdfs://namenode:8020
+      KAFKA_BROKERS: kafka:9092
+    volumes:
+      - ../..:/opt/project:ro
+    entrypoint: ['python3']
+volumes:
+  verify_namenode: {}
+  verify_datanode: {}

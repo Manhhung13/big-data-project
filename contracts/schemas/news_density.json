@@ -1,0 +1,80 @@
+{
+  "dataset": "news_density",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "symbol",
+      "type_code": "s"
+    },
+    {
+      "name": "window_start",
+      "type_code": "t"
+    },
+    {
+      "name": "window_end",
+      "type_code": "t"
+    },
+    {
+      "name": "window_size",
+      "type_code": "s"
+    },
+    {
+      "name": "session_id",
+      "type_code": "s"
+    },
+    {
+      "name": "time_bucket",
+      "type_code": "s"
+    },
+    {
+      "name": "event_date",
+      "type_code": "date"
+    },
+    {
+      "name": "news_count",
+      "type_code": "l"
+    },
+    {
+      "name": "eligible_article_count",
+      "type_code": "l"
+    },
+    {
+      "name": "mapping_version",
+      "type_code": "s"
+    },
+    {
+      "name": "source_snapshot",
+      "type_code": "s"
+    },
+    {
+      "name": "run_id",
+      "type_code": "s"
+    },
+    {
+      "name": "code_version",
+      "type_code": "s"
+    },
+    {
+      "name": "config_hash",
+      "type_code": "s"
+    },
+    {
+      "name": "processing_timestamp",
+      "type_code": "t"
+    }
+  ]
+}

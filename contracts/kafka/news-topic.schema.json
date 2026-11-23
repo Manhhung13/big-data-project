@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "news-topic payload, schema_version=1.0",
+  "description": "Either content_text or content_html may carry the body; HTML is cleaned by B2 (tags/script/style removed, entities decoded, Unicode NFC). Kafka headers are kept as map<string,string>.",
+  "type": "object",
+  "required": ["schema_version","url","title","source","crawled_at"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "article_id": {"type":["string","null"]},
+    "url": {"type":"string","format":"uri"},
+    "title": {"type":"string","minLength":1},
+    "content_text": {"type":["string","null"]},
+    "content_html": {"type":["string","null"], "description": "optional raw HTML body; used when content_text is absent"},
+    "raw_html_ref": {"type":["string","null"]},
+    "published_at": {"type":["string","null"],"format":"date-time", "description": "missing => time_quality=MISSING, never counted in density"},
+    "crawled_at": {"type":"string","format":"date-time"},
+    "source": {"type":"string"},
+    "rights_policy": {"type":["string","null"], "description": "licence/usage note for the content"}
+  },
+  "additionalProperties": true
+}

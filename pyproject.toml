@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stock-batch-layer"
+version = "1.1.0"
+description = "Vietnam stock-market HDFS Data Lake and Spark Batch B1-B7"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = ["pyspark==3.5.9", "PyYAML>=6.0,<7"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+stock-batch = "stock_batch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["spark: requires a working Spark/JDK installation", "docker: requires Docker"]

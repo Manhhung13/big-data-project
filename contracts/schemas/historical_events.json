@@ -1,0 +1,120 @@
+{
+  "dataset": "historical_events",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "event_id",
+      "type_code": "s"
+    },
+    {
+      "name": "symbol",
+      "type_code": "s"
+    },
+    {
+      "name": "event_time",
+      "type_code": "t"
+    },
+    {
+      "name": "event_end",
+      "type_code": "t"
+    },
+    {
+      "name": "event_date",
+      "type_code": "date"
+    },
+    {
+      "name": "event_type",
+      "type_code": "s"
+    },
+    {
+      "name": "status",
+      "type_code": "s"
+    },
+    {
+      "name": "price_flag",
+      "type_code": "b"
+    },
+    {
+      "name": "volume_flag",
+      "type_code": "b"
+    },
+    {
+      "name": "news_flag",
+      "type_code": "b"
+    },
+    {
+      "name": "z_return",
+      "type_code": "d"
+    },
+    {
+      "name": "z_volume",
+      "type_code": "d"
+    },
+    {
+      "name": "z_news",
+      "type_code": "d"
+    },
+    {
+      "name": "baseline_version",
+      "type_code": "s"
+    },
+    {
+      "name": "rule_version",
+      "type_code": "s"
+    },
+    {
+      "name": "related_article_ids",
+      "type_code": "arr"
+    },
+    {
+      "name": "source_snapshot",
+      "type_code": "s"
+    },
+    {
+      "name": "run_id",
+      "type_code": "s"
+    },
+    {
+      "name": "code_version",
+      "type_code": "s"
+    },
+    {
+      "name": "config_hash",
+      "type_code": "s"
+    },
+    {
+      "name": "processing_timestamp",
+      "type_code": "t"
+    },
+    {
+      "name": "price_state",
+      "type_code": "s"
+    },
+    {
+      "name": "volume_state",
+      "type_code": "s"
+    },
+    {
+      "name": "news_state",
+      "type_code": "s"
+    },
+    {
+      "name": "baseline_sample_count",
+      "type_code": "l"
+    }
+  ]
+}

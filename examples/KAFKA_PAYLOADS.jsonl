@@ -1,0 +1,2 @@
+{"topic":"stock-price-topic","key":"FPT","value":{"schema_version":"1.0","symbol":"FPT","source":"provider_a","source_price_unit":"VND","bar_start":"2026-10-02T03:30:00Z","open":100000,"high":100500,"low":99800,"close":100200,"volume":12500}}
+{"topic":"news-topic","key":"news:123","value":{"schema_version":"1.0","source":"demo_news","url":"https://example.org/article?id=123&utm_source=demo","title":"FPT announces synthetic demonstration news","content_text":"FPT demonstration only.","published_at":"2026-10-02T03:25:00Z","crawled_at":"2026-10-02T03:28:00Z"}}

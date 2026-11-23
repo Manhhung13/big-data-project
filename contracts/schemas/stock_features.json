@@ -1,0 +1,120 @@
+{
+  "dataset": "stock_features",
+  "schema_version": "1.0",
+  "format": "parquet",
+  "spark_types": {
+    "s": "STRING",
+    "i": "INT",
+    "l": "BIGINT",
+    "d": "DOUBLE",
+    "b": "BOOLEAN",
+    "t": "TIMESTAMP",
+    "date": "DATE",
+    "money": "DECIMAL(20,4)",
+    "bin": "BINARY",
+    "arr": "ARRAY<STRING>",
+    "map": "MAP<STRING,STRING>"
+  },
+  "fields": [
+    {
+      "name": "symbol",
+      "type_code": "s"
+    },
+    {
+      "name": "exchange",
+      "type_code": "s"
+    },
+    {
+      "name": "window_start",
+      "type_code": "t"
+    },
+    {
+      "name": "window_end",
+      "type_code": "t"
+    },
+    {
+      "name": "trade_date",
+      "type_code": "date"
+    },
+    {
+      "name": "session_id",
+      "type_code": "s"
+    },
+    {
+      "name": "time_bucket",
+      "type_code": "s"
+    },
+    {
+      "name": "interval",
+      "type_code": "s"
+    },
+    {
+      "name": "open",
+      "type_code": "money"
+    },
+    {
+      "name": "high",
+      "type_code": "money"
+    },
+    {
+      "name": "low",
+      "type_code": "money"
+    },
+    {
+      "name": "close",
+      "type_code": "money"
+    },
+    {
+      "name": "volume_sum",
+      "type_code": "l"
+    },
+    {
+      "name": "bar_count",
+      "type_code": "i"
+    },
+    {
+      "name": "expected_bar_count",
+      "type_code": "i"
+    },
+    {
+      "name": "completeness",
+      "type_code": "d"
+    },
+    {
+      "name": "return_simple",
+      "type_code": "d"
+    },
+    {
+      "name": "return_log",
+      "type_code": "d"
+    },
+    {
+      "name": "return_missing_reason",
+      "type_code": "s"
+    },
+    {
+      "name": "feature_version",
+      "type_code": "s"
+    },
+    {
+      "name": "source_snapshot",
+      "type_code": "s"
+    },
+    {
+      "name": "run_id",
+      "type_code": "s"
+    },
+    {
+      "name": "code_version",
+      "type_code": "s"
+    },
+    {
+      "name": "config_hash",
+      "type_code": "s"
+    },
+    {
+      "name": "processing_timestamp",
+      "type_code": "t"
+    }
+  ]
+}

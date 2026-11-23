@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "stock-price-topic payload, schema_version=1.0",
+  "type": "object",
+  "required": ["schema_version","symbol","source","source_price_unit","bar_start","open","high","low","close","volume"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "symbol": {"type":"string","minLength":1},
+    "source": {"type":"string"},
+    "source_price_unit": {"enum":["VND","THOUSAND_VND"]},
+    "bar_start": {"type":"string","format":"date-time"},
+    "open": {"type":"number","exclusiveMinimum":0},
+    "high": {"type":"number","exclusiveMinimum":0},
+    "low": {"type":"number","exclusiveMinimum":0},
+    "close": {"type":"number","exclusiveMinimum":0},
+    "volume": {"type":"integer","minimum":0}
+  },
+  "additionalProperties": true
+}
