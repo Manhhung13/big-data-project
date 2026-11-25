@@ -2,7 +2,7 @@
 
 Module thực hiện phần Serving Layer → End-user Dashboard trong đề xuất: truy vấn giá/volume, mật độ tin, timeline sự kiện và phân tích lịch sử. Có bộ nạp dữ liệu Parquet đang có trong thư mục và sink nhận kết quả Batch/Speed. Dữ liệu crawl và dữ liệu demo được lưu ở các index riêng.
 
-**Đã nạp toàn bộ lịch sử ngày 11/11/2026:** 4.638.969 bản ghi giá của 30 mã (13/11/2023–10/11/2026), 994.330 feature 5 phút, 8.905 bài báo tương ứng 9.023 bản ánh xạ và 795 cửa sổ mật độ tin có bài. Số lượng đã được đối chiếu với nguồn, không có lỗi bulk. Chọn **Dữ liệu crawl → Toàn bộ lịch sử** trên dashboard để xem; bằng chứng ở `reports/full_import_verification.json`. Lệnh import mặc định vẫn chỉ chọn 30 ngày; dùng `--days 0 --load` để nạp lại toàn bộ.
+Lệnh import mặc định chọn 30 ngày cuối dữ liệu nguồn; dùng `--days 0 --load` để nạp toàn bộ lịch sử. Chọn **Dữ liệu crawl → Toàn bộ lịch sử** trên dashboard để xem phần đã nạp vào Elasticsearch của bạn.
 
 **Chưa có trong dữ liệu được cung cấp:** baseline, anomaly flags, historical_events, event_analysis và đầu ra Spark Streaming. Bộ nạp Bronze chỉ tạo view giá, return 5 phút và đếm tin đã ánh xạ; không tự sinh z-score hoặc sự kiện. Kafka, Spark và HDFS thuộc upstream, chưa được triển khai trong module này.
 
@@ -49,7 +49,7 @@ Ví dụ phạm vi nạp khác:
 
 Mặc định `data-root` được tính theo vị trí script: `big-data-project-crawl-data/data`. Giá và feature được giới hạn bởi `--symbols`; tin được đọc và ánh xạ theo toàn bộ danh sách mã nguồn, kể cả khi chỉ nạp một vài mã giá. Các lần nạp cộng dồn vào index, không xóa dữ liệu ngoài khoảng được chọn.
 
-`reports/import_report.json` ghi số dòng đầu vào, không hợp lệ, trùng khóa, thời gian đầu/cuối, số dòng chọn và số document gửi cho từng index. Chế độ `load` trả exit code khác 0 nếu có lỗi bulk. Không xem số document gửi là số document mới: replay cùng khóa có thể được xử lý `noop`.
+Bộ nạp tạo `reports/import_report.json` tại máy, ghi số dòng đầu vào, không hợp lệ, trùng khóa, thời gian đầu/cuối, số dòng chọn và số document gửi cho từng index. Thư mục báo cáo không được quản lý bằng Git. Chế độ `load` trả exit code khác 0 nếu có lỗi bulk. Không xem số document gửi là số document mới: replay cùng khóa có thể được xử lý `noop`.
 
 ## Dữ liệu thực tế và chuẩn hóa
 
@@ -150,7 +150,7 @@ $env:RUN_DASHBOARD_TESTS = '1'
 
 Integration test chỉ tạo/xóa index tạm `serving-test-<uuid>-*` do chính test tạo, không xóa index dữ liệu. Test xác minh replay/version/Batch authority, OPEN→COMPLETED, OHLCV aggregation, biên thời gian, density không cộng chồng, thống kê 220 event khi chỉ hiển thị 200, và liên kết tin đúng mã. AppTest thử real/demo, ngày tùy chọn, realtime, tìm tin và bộ lọc event.
 
-Xem `REVIEW.md` và `reports/verification.json` để biết kết quả thực tế và phần chưa kiểm chứng. Bản sao mã trước sửa nằm trong `.review-backup/`. Không sửa file Parquet hoặc báo cáo Word gốc.
+Ghi lại kết quả kiểm thử của môi trường đang chạy; không coi test bị skip là đã đạt. Kiểm thử AppTest không thay thế kiểm tra bố cục và trải nghiệm trong trình duyệt.
 
 ## Vận hành local và tài liệu
 

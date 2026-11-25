@@ -14,7 +14,12 @@ stock_market_serving_dashboard_v2/big-data-project-crawl-data/
 /outputs/
 /*.docx
 *.log
-stock_market_serving_dashboard_v2/reports/full_import_started.txt
+stock_market_serving_dashboard_v2/reports/
+
+# Hướng dẫn và cấu hình chỉ dùng tại máy cá nhân
+/AGENTS.md
+stock_market_serving_dashboard_v2/REVIEW.md
+stock_market_serving_dashboard_v2/.gitignore
 
 # Cấu hình bí mật
 .env
