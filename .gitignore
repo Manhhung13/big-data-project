@@ -1,0 +1,22 @@
+# Môi trường, cache và công cụ cục bộ
+**/.venv/
+**/__pycache__/
+*.py[cod]
+**/.tools/
+**/.agents/
+**/.review-backup/
+
+# Dữ liệu crawl thuộc nhánh crawl-data; không sao chép vào nhánh serving
+stock_market_serving_dashboard_v2/big-data-project-crawl-data/
+*.parquet
+
+# Tài liệu nguồn, minh họa cá nhân và log vận hành
+/outputs/
+/*.docx
+*.log
+stock_market_serving_dashboard_v2/reports/full_import_started.txt
+
+# Cấu hình bí mật
+.env
+.env.*
+!.env.example

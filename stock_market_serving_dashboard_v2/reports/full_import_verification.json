@@ -1,0 +1,281 @@
+{
+  "verified_at": "2026-11-11T08:07:23.376150+07:00",
+  "elapsed_seconds_to_verification": 1105.8,
+  "mode": "load",
+  "bulk_errors": 0,
+  "expected_counts": {
+    "real-stock-price-v1": 4638969,
+    "real-stock-features-v1": 994330,
+    "real-stock-news-v1": 9023,
+    "real-news-density-v1": 795
+  },
+  "actual_counts": {
+    "real-stock-price-v1": 4638969,
+    "real-stock-features-v1": 994330,
+    "real-stock-news-v1": 9023,
+    "real-news-density-v1": 795,
+    "real-market-events-v1": 0
+  },
+  "all_counts_match_source": true,
+  "per_symbol": [
+    {
+      "symbol": "ACB",
+      "prices": 159970,
+      "features_5m": 33237,
+      "first": "2023-11-13T02:15:29.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "BCM",
+      "prices": 119006,
+      "features_5m": 32256,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "BID",
+      "prices": 155583,
+      "features_5m": 33178,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "CTG",
+      "prices": 160893,
+      "features_5m": 33242,
+      "first": "2023-11-13T02:15:37.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "FPT",
+      "prices": 161379,
+      "features_5m": 33251,
+      "first": "2023-11-13T02:15:30.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "GAS",
+      "prices": 144035,
+      "features_5m": 33036,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "GVR",
+      "prices": 151930,
+      "features_5m": 33191,
+      "first": "2023-11-13T02:15:51.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "HDB",
+      "prices": 156725,
+      "features_5m": 33184,
+      "first": "2023-11-13T02:15:30.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "HPG",
+      "prices": 162953,
+      "features_5m": 33309,
+      "first": "2023-11-13T02:15:58.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "LPB",
+      "prices": 139452,
+      "features_5m": 32915,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "MBB",
+      "prices": 162075,
+      "features_5m": 33261,
+      "first": "2023-11-13T02:15:49.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "MSN",
+      "prices": 160861,
+      "features_5m": 33184,
+      "first": "2023-11-13T02:15:46.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "MWG",
+      "prices": 161554,
+      "features_5m": 33218,
+      "first": "2023-11-13T02:15:59.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "PLX",
+      "prices": 143165,
+      "features_5m": 33032,
+      "first": "2023-11-13T02:15:12.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "POW",
+      "prices": 155703,
+      "features_5m": 33197,
+      "first": "2023-11-13T02:15:53.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "SAB",
+      "prices": 137148,
+      "features_5m": 32976,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "SHB",
+      "prices": 161123,
+      "features_5m": 33251,
+      "first": "2023-11-13T02:15:58.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "SSI",
+      "prices": 162784,
+      "features_5m": 33311,
+      "first": "2023-11-13T02:15:53.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "STB",
+      "prices": 159792,
+      "features_5m": 33240,
+      "first": "2023-11-13T02:15:34.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "TCB",
+      "prices": 160888,
+      "features_5m": 33196,
+      "first": "2023-11-13T02:15:00.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "TPB",
+      "prices": 158207,
+      "features_5m": 33194,
+      "first": "2023-11-13T02:15:59.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VCB",
+      "prices": 157370,
+      "features_5m": 33179,
+      "first": "2023-11-13T02:15:59.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VHM",
+      "prices": 161628,
+      "features_5m": 33248,
+      "first": "2023-11-13T02:15:54.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VIB",
+      "prices": 152104,
+      "features_5m": 33154,
+      "first": "2023-11-13T02:15:47.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VIC",
+      "prices": 157454,
+      "features_5m": 33177,
+      "first": "2023-11-13T02:15:50.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VJC",
+      "prices": 131783,
+      "features_5m": 32855,
+      "first": "2023-11-13T02:15:28.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VND",
+      "prices": 162120,
+      "features_5m": 33272,
+      "first": "2023-11-13T02:15:51.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VNM",
+      "prices": 160126,
+      "features_5m": 33157,
+      "first": "2023-11-13T02:15:51.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VPB",
+      "prices": 161595,
+      "features_5m": 33239,
+      "first": "2023-11-13T02:15:57.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    },
+    {
+      "symbol": "VRE",
+      "prices": 159563,
+      "features_5m": 33190,
+      "first": "2023-11-13T02:15:56.000Z",
+      "last": "2026-11-10T07:45:00.000Z",
+      "matches_source": true
+    }
+  ],
+  "sample_ohlcv": {
+    "checked": 90,
+    "all_match": true
+  },
+  "unique_articles": 8905,
+  "mapped_articles": 682,
+  "unmapped_articles": 8223,
+  "news_density_total": 800,
+  "cluster_health": "green",
+  "index_store_bytes": 616542708,
+  "passed": true,
+  "dashboard_full_history": {
+    "passed": true,
+    "symbols": 30,
+    "tabs": 4,
+    "first_date": "2023-11-13",
+    "last_date": "2026-11-10",
+    "errors": 0
+  }
+}

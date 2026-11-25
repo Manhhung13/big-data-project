@@ -1,0 +1,300 @@
+{
+  "mode": "dry_run",
+  "data_root": "D:\\BigData\\stock_market_serving_dashboard_v2\\big-data-project-crawl-data\\data",
+  "start_inclusive": "2026-10-11T17:00:00Z",
+  "end_exclusive": "2026-11-10T17:00:00Z",
+  "news_naive_timezone": "Asia/Ho_Chi_Minh",
+  "news": {
+    "input": 8905,
+    "unmapped_articles": 8223,
+    "clean_articles": 8905,
+    "mapped_articles": 682,
+    "first_published": "2025-10-27T10:57:00Z",
+    "last_published": "2026-11-10T13:26:00Z",
+    "sources": {
+      "cafef": 8905
+    },
+    "selected_articles": 770,
+    "selected_mapped_articles": 57,
+    "selected_unmapped_articles": 713
+  },
+  "stock": {
+    "ACB_1m.parquet": {
+      "input": 159970,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 159970,
+      "first": "2023-11-13T02:15:29Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4916
+    },
+    "BCM_1m.parquet": {
+      "input": 119006,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 119006,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 3294
+    },
+    "BID_1m.parquet": {
+      "input": 155583,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 155583,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4912
+    },
+    "CTG_1m.parquet": {
+      "input": 160893,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 160893,
+      "first": "2023-11-13T02:15:37Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4946
+    },
+    "FPT_1m.parquet": {
+      "input": 161379,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 161379,
+      "first": "2023-11-13T02:15:30Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4971
+    },
+    "GAS_1m.parquet": {
+      "input": 144035,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 144035,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4380
+    },
+    "GVR_1m.parquet": {
+      "input": 151930,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 151930,
+      "first": "2023-11-13T02:15:51Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4511
+    },
+    "HDB_1m.parquet": {
+      "input": 156725,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 156725,
+      "first": "2023-11-13T02:15:30Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4958
+    },
+    "HPG_1m.parquet": {
+      "input": 162953,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 162953,
+      "first": "2023-11-13T02:15:58Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4971
+    },
+    "LPB_1m.parquet": {
+      "input": 139452,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 139452,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4789
+    },
+    "MBB_1m.parquet": {
+      "input": 162075,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 162075,
+      "first": "2023-11-13T02:15:49Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4970
+    },
+    "MSN_1m.parquet": {
+      "input": 160861,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 160861,
+      "first": "2023-11-13T02:15:46Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4938
+    },
+    "MWG_1m.parquet": {
+      "input": 161554,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 161554,
+      "first": "2023-11-13T02:15:59Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4865
+    },
+    "PLX_1m.parquet": {
+      "input": 143165,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 143165,
+      "first": "2023-11-13T02:15:12Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4652
+    },
+    "POW_1m.parquet": {
+      "input": 155703,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 155703,
+      "first": "2023-11-13T02:15:53Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4676
+    },
+    "SAB_1m.parquet": {
+      "input": 137148,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 137148,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 3809
+    },
+    "SHB_1m.parquet": {
+      "input": 161123,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 161123,
+      "first": "2023-11-13T02:15:58Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4965
+    },
+    "SSI_1m.parquet": {
+      "input": 162784,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 162784,
+      "first": "2023-11-13T02:15:53Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4969
+    },
+    "STB_1m.parquet": {
+      "input": 159792,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 159792,
+      "first": "2023-11-13T02:15:34Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4841
+    },
+    "TCB_1m.parquet": {
+      "input": 160888,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 160888,
+      "first": "2023-11-13T02:15:00Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4967
+    },
+    "TPB_1m.parquet": {
+      "input": 158207,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 158207,
+      "first": "2023-11-13T02:15:59Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4831
+    },
+    "VCB_1m.parquet": {
+      "input": 157370,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 157370,
+      "first": "2023-11-13T02:15:59Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4955
+    },
+    "VHM_1m.parquet": {
+      "input": 161628,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 161628,
+      "first": "2023-11-13T02:15:54Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4972
+    },
+    "VIB_1m.parquet": {
+      "input": 152104,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 152104,
+      "first": "2023-11-13T02:15:47Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4778
+    },
+    "VIC_1m.parquet": {
+      "input": 157454,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 157454,
+      "first": "2023-11-13T02:15:50Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4953
+    },
+    "VJC_1m.parquet": {
+      "input": 131783,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 131783,
+      "first": "2023-11-13T02:15:28Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4307
+    },
+    "VND_1m.parquet": {
+      "input": 162120,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 162120,
+      "first": "2023-11-13T02:15:51Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4909
+    },
+    "VNM_1m.parquet": {
+      "input": 160126,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 160126,
+      "first": "2023-11-13T02:15:51Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4839
+    },
+    "VPB_1m.parquet": {
+      "input": 161595,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 161595,
+      "first": "2023-11-13T02:15:57Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4971
+    },
+    "VRE_1m.parquet": {
+      "input": 159563,
+      "invalid": 0,
+      "duplicates": 0,
+      "clean": 159563,
+      "first": "2023-11-13T02:15:56Z",
+      "last": "2026-11-10T07:45:00Z",
+      "selected": 4876
+    }
+  },
+  "documents": {
+    "real-stock-price-v1": 142691,
+    "real-stock-features-v1": 30291,
+    "real-stock-news-v1": 777,
+    "real-news-density-v1": 63
+  },
+  "errors": 0
+}

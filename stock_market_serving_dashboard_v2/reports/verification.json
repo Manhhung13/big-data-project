@@ -1,0 +1,38 @@
+{
+  "verified_at": "2026-11-11T07:32:13.646461+07:00",
+  "tests": {
+    "run": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "versions": {
+    "python": "3.12.0",
+    "elasticsearch_server": "9.5.6",
+    "elasticsearch": "9.5.1",
+    "streamlit": "1.67.0",
+    "pandas": "3.1.1",
+    "numpy": "2.5.4",
+    "pyarrow": "26.0.1",
+    "plotly": "6.9.0",
+    "tzdata": "2026.6"
+  },
+  "index_counts": {
+    "real-stock-price-v1": 142691,
+    "real-stock-features-v1": 30291,
+    "real-stock-news-v1": 777,
+    "real-news-density-v1": 63,
+    "real-market-events-v1": 0
+  },
+  "replay_counts_match_import": true,
+  "stock_audit": {
+    "input": 4638969,
+    "invalid": 0,
+    "duplicates": 0,
+    "clean": 4638969,
+    "selected": 142691
+  },
+  "dashboard_app_test": "passed",
+  "browser_screenshot_check": "not_run: computer use stopped because Chrome URL could not be determined confidently",
+  "live_spark_kafka_integration": "not available in supplied workspace"
+}

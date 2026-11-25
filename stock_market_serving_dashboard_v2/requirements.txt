@@ -1,0 +1,7 @@
+elasticsearch>=9.0,<10
+streamlit>=1.51,<2
+pandas>=2.0,<4
+numpy>=1.24,<3
+plotly>=5.18,<7
+pyarrow>=14,<27
+tzdata>=2024.1
