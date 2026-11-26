@@ -1,0 +1,33 @@
+# Python & Virtual Environment
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Runtime state & temp files
+data/.collector_state/
+data_ingestion/.last_stock_timestamps.json
+data_ingestion/.seen_news_ids.json
+*.tmp
+*.log
+
+# Spark / Streaming runtime (for teammates)
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoints/
+
+# Secrets & Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
