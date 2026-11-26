@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.pyo
+.last_stock_timestamps.json
+.seen_news_ids.json
+historical_bronze/

@@ -1,0 +1,8 @@
+--extra-index-url https://vnstocks.com/api/packages
+vnstock
+kafka-python
+requests
+beautifulsoup4
+apscheduler
+pandas
+pyarrow
