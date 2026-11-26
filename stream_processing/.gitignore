@@ -1,0 +1,5 @@
+# Đầu ra khi chạy pipeline (baseline, input stream, checkpoint, serving db)
+data/
+# winutils.exe + hadoop.dll cho Spark trên Windows: tự tải, không commit
+hadoop/
+spark-warehouse/
