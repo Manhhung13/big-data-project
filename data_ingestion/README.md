@@ -15,8 +15,9 @@ data_ingestion/
 ├── config.py                    # Cấu hình Kafka brokers, đường dẫn data/bronze, 30 mã VN30, timezone
 ├── generate_reference_data.py   # Script tạo bảng Reference Data cho 30 mã VN30
 ├── reference_symbols.csv        # Bảng ánh xạ symbol - company_name - aliases - industry (cho Spark NLP)
+├── bronze_storage.py            # Module ghi gộp atomic & chuẩn hóa phân vùng theo tháng year=YYYY/month=MM/
 ├── auto_collector_1m.py         # Producer cào realtime 1 phút/lần đẩy lên Kafka
-├── bronze_sink_consumer.py      # Consumer đọc Kafka, hẹn giờ 1 giờ/lần gộp vào data/bronze/
+├── bronze_sink_consumer.py      # Consumer đọc Kafka, hẹn giờ 1 giờ/lần gộp theo tháng vào data/bronze/
 ├── backfill_history.py          # Script backfill lịch sử (cổ phiếu 1D & tin tức CafeF)
 ├── backfill_symbol_3y_1m.py     # Script backfill nến 1m cho 1 mã cổ phiếu
 ├── backfill_vn30_3y_1m.py       # Script backfill nến 1m cho toàn bộ 30 mã VN30 (hỗ trợ --days)
@@ -132,25 +133,25 @@ python backfill_symbol_3y_1m.py --symbol HPG --years 1 --chunk 30
 ```bash
 python auto_collector_1m.py
 ```
-- **Giây thứ 10:** Quét giá nến 1m thực tế mới nhất của 30 mã VN30 từ TradingView UDF **VNDirect (`dchart-api.vndirect.com.vn`, nguồn chính)** / **Mirae Asset (`masboard.masvn.com`, dự phòng)** (có cơ chế tự lấy bù nến đóng muộn) đẩy vào `stock-price-topic` (Key: `symbol`).
-- **Giây thứ 20:** Quét CafeF, đối chiếu cache `.seen_news_ids.json`, đẩy bài báo mới vào `news-topic` (Key: `article_id`).
+- **Giây thứ 10:** Quét giá nến 1m thực tế mới nhất của 30 mã VN30 từ TradingView UDF **VNDirect (`dchart-api.vndirect.com.vn`, chính)** / **DNSE Entrade (`services.entrade.com.vn`, dự phòng 1)** / **Mirae Asset (`masboard.masvn.com`, dự phòng 2)** / **`vnstock 6.0` OpenAPI (dự phòng 3 tùy chọn khi có `VNSTOCK_SOURCE` + API key)** đẩy vào `stock-price-topic` (Key: `symbol`).
+- **Giây thứ 20:** Quét CafeF (`timeout=(2.5, 6)`, `Connection: close`, retry 1 lần), đối chiếu cache `.seen_news_ids.json`, đẩy bài báo mới vào `news-topic` (Key: `article_id`).
 
 *(Nếu test ngoài giờ giao dịch, dùng `python replay_producer.py --bars 10 --speed 1 --include-news` để phát dữ liệu mẫu vào cả 2 topics).*
 
 ### Bước 6: Chạy nhánh lưu Bronze Store (Hẹn giờ 1 giờ/lần) & Bàn giao Kafka cho Streaming
 Từ Kafka, dữ liệu sẵn sàng cho **2 nhánh độc lập**:
-1. **Nhánh Bronze Store (`bronze-store-group` — Hẹn giờ 1 giờ lưu gộp 1 lần):**
+1. **Nhánh Bronze Store (`bronze-store-group` — Hẹn giờ 1 giờ lưu gộp theo tháng 1 lần):**
    ```bash
    python bronze_sink_consumer.py --flush-interval 3600
    ```
-   Gom dữ liệu từ `stock-price-topic` & `news-topic`, mỗi 1 giờ (`3600s`) tự động gộp trực tiếp và khử trùng lặp vào `../data/bronze/stock/{SYMBOL}_1m.parquet` và `../data/bronze/news/historical_news.parquet`.
+   Gom dữ liệu từ `stock-price-topic` & `news-topic`, mỗi 1 giờ (`3600s`) tự động gộp trực tiếp và khử trùng lặp vào phân vùng tháng `../data/bronze/stock/year=YYYY/month=MM/{SYMBOL}_1m.parquet` và `../data/bronze/news/year=YYYY/month=MM/news.parquet`.
 2. **Nhánh Streaming (của thành viên khác):**
    - Kết nối tới `localhost:9092` (hoặc `kafka:29092` nếu chạy chung Docker network `data_ingestion_default`), dùng `group.id` riêng đọc liên tục mỗi phút từ `stock-price-topic` và `news-topic`.
 3. **Kiểm tra dữ liệu Bronze:**
    ```bash
    python read_bronze_data.py --summary
-   python read_bronze_data.py --symbol FPT
-   python read_bronze_data.py --news
+   python read_bronze_data.py --symbol FPT --month 2026-11
+   python read_bronze_data.py --news --month 2026-11
    ```
 
 ---

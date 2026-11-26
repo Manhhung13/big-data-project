@@ -182,22 +182,24 @@ def _reset_kafka_producer():
 def fetch_recent_bars(symbol: str, max_bars: int = 10) -> list[dict]:
     """
     Quét tối đa `max_bars` nến 1m thực tế mới nhất của mã cổ phiếu (sắp xếp tăng dần theo thời gian):
-    - Nguồn chính : TradingView UDF VNDirect (dchart-api.vndirect.com.vn, giá sẵn đơn vị nghìn đồng)
-    - Nguồn dự phòng: TradingView UDF Mirae Asset (masboard.masvn.com, giá VND -> chia 1000)
+    - Nguồn chính   : TradingView UDF VNDirect (dchart-api.vndirect.com.vn, giá sẵn đơn vị nghìn đồng)
+    - Dự phòng 1    : TradingView UDF DNSE Entrade (services.entrade.com.vn, giá sẵn đơn vị nghìn đồng)
+    - Dự phòng 2    : TradingView UDF Mirae Asset (masboard.masvn.com, giá VND -> chia 1000)
+    - Dự phòng 3    : vnstock 6.0.0 OpenAPI (chỉ kích hoạt nếu cấu hình env VNSTOCK_SOURCE + API key CTCK)
     """
     now = datetime.now(TZ_VN)
     now_ts = int(now.timestamp())
     lookback_ts = now_ts - 86400 * 5  # Đủ qua cuối tuần/ngày lễ để luôn có nến cuối gần nhất
     errors = []
 
-    # 1. Nguồn chính: VNDirect dchart (ổn định 30/30 mã, timestamp chuẩn :00, giá nghìn đồng)
+    # 1. Nguồn chính: VNDirect dchart
     try:
         url_vnd = "https://dchart-api.vndirect.com.vn/dchart/history"
         r = http_session.get(
             url_vnd,
             params={"symbol": symbol, "resolution": "1", "from": lookback_ts, "to": now_ts},
             headers={"User-Agent": HEADERS["User-Agent"]},
-            timeout=5,
+            timeout=(3, 5),
         )
         if r.status_code == 200:
             data = r.json()
@@ -224,7 +226,41 @@ def fetch_recent_bars(symbol: str, max_bars: int = 10) -> list[dict]:
     except Exception as e:
         errors.append(f"VND {type(e).__name__}")
 
-    # 2. Nguồn dự phòng: Mirae Asset (chặn redirect lỗi sang mapsboard.masvn.com)
+    # 2. Nguồn dự phòng 1: DNSE Entrade chart-api (giá nghìn đồng, timestamp chuẩn :00)
+    try:
+        url_dnse = "https://services.entrade.com.vn/chart-api/v2/ohlcs/stock"
+        r = http_session.get(
+            url_dnse,
+            params={"symbol": symbol, "resolution": "1", "from": lookback_ts, "to": now_ts},
+            headers={"User-Agent": HEADERS["User-Agent"]},
+            timeout=(3, 5),
+        )
+        if r.status_code == 200:
+            data = r.json()
+            if data.get("t"):
+                start_idx = max(0, len(data["t"]) - max_bars)
+                bars = []
+                for idx in range(start_idx, len(data["t"])):
+                    dt = datetime.fromtimestamp(int(data["t"][idx]), tz=TZ_VN)
+                    bars.append({
+                        "symbol": symbol,
+                        "timestamp": dt.strftime("%Y-%m-%d %H:%M:%S+07:00"),
+                        "open": round(float(data["o"][idx]), 2),
+                        "high": round(float(data["h"][idx]), 2),
+                        "low": round(float(data["l"][idx]), 2),
+                        "close": round(float(data["c"][idx]), 2),
+                        "volume": int(data["v"][idx]),
+                        "source": "dnse_tradingview",
+                        "ingested_at": now.isoformat(),
+                    })
+                return bars
+            errors.append("DNSE empty")
+        else:
+            errors.append(f"DNSE HTTP {r.status_code}")
+    except Exception as e:
+        errors.append(f"DNSE {type(e).__name__}")
+
+    # 3. Nguồn dự phòng 2: Mirae Asset (chặn redirect lỗi sang mapsboard.masvn.com)
     try:
         url_mas = "https://masboard.masvn.com/api/v1/tradingview/history"
         r = http_session.get(
@@ -232,7 +268,7 @@ def fetch_recent_bars(symbol: str, max_bars: int = 10) -> list[dict]:
             params={"symbol": symbol, "resolution": "1", "from": lookback_ts, "to": now_ts},
             headers={"User-Agent": HEADERS["User-Agent"], "Referer": "https://masboard.masvn.com/"},
             allow_redirects=False,
-            timeout=5,
+            timeout=(3, 5),
         )
         if r.status_code == 200:
             data = r.json()
@@ -258,6 +294,31 @@ def fetch_recent_bars(symbol: str, max_bars: int = 10) -> list[dict]:
             errors.append(f"MAS HTTP {r.status_code}")
     except Exception as e:
         errors.append(f"MAS {type(e).__name__}")
+
+    # 4. Nguồn dự phòng 3 (tùy chọn): vnstock 6.0 OpenAPI khi có VNSTOCK_SOURCE + API key CTCK
+    vnstock_src = os.environ.get("VNSTOCK_SOURCE", "").strip().lower()
+    if vnstock_src:
+        try:
+            from vnstock import Market
+            df = Market().equity(symbol).ohlcv(source=vnstock_src, interval="1m", length=max_bars)
+            if df is not None and not df.empty:
+                bars = []
+                for _, row in df.tail(max_bars).iterrows():
+                    ts_val = str(row["time"]) if "time" in row else now.strftime("%Y-%m-%d %H:%M:00+07:00")
+                    bars.append({
+                        "symbol": symbol,
+                        "timestamp": ts_val,
+                        "open": round(float(row["open"]), 2),
+                        "high": round(float(row["high"]), 2),
+                        "low": round(float(row["low"]), 2),
+                        "close": round(float(row["close"]), 2),
+                        "volume": int(row["volume"]),
+                        "source": f"vnstock_{vnstock_src}",
+                        "ingested_at": now.isoformat(),
+                    })
+                return bars
+        except Exception as e:
+            errors.append(f"vnstock({vnstock_src}) {type(e).__name__}")
 
     print(f"[Stock Warning] Không lấy được dữ liệu mã {symbol}: {'; '.join(errors)}")
     return []
@@ -345,7 +406,19 @@ def job_collect_news():
     batch_ids = set()
 
     try:
-        res = http_session.get(CAFEF_URL, headers=HEADERS, timeout=8)
+        res = None
+        last_err = None
+        cafef_headers = {**HEADERS, "Connection": "close"}
+        for attempt in range(2):
+            try:
+                res = requests.get(CAFEF_URL, headers=cafef_headers, timeout=(2.5, 6))
+                break
+            except requests.RequestException as req_err:
+                last_err = req_err
+                time.sleep(0.2)
+        if res is None:
+            raise last_err
+
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             boxes = soup.select(".box-category-item") or soup.select(".tlitem")
