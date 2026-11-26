@@ -16,6 +16,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
         pass
 
 from config import SYMBOLS, CAFEF_URL, HEADERS, TZ_VN, BRONZE_STOCK_DIR, BRONZE_NEWS_DIR
+from bronze_storage import merge_news_records
 
 STOCK_OUTPUT_DIR = BRONZE_STOCK_DIR
 NEWS_OUTPUT_DIR = BRONZE_NEWS_DIR
@@ -223,25 +224,8 @@ def backfill_news_history(days_back=365, max_pages=600, batch_size=25):
         return
 
     df_news = pd.DataFrame(all_articles)
-    output_parquet = os.path.join(NEWS_OUTPUT_DIR, "historical_news.parquet")
-    
-    # Merge và loại bỏ trùng lặp nếu file đã tồn tại
-    if os.path.exists(output_parquet):
-        try:
-            old_news = pd.read_parquet(output_parquet)
-            combined_news = pd.concat([old_news, df_news], ignore_index=True)
-            combined_news['article_id'] = combined_news['article_id'].astype(str)
-            combined_news = combined_news.drop_duplicates(subset=['article_id'], keep='last')
-            combined_news = combined_news.sort_values(by=['published_at'], ascending=False)
-            combined_news.to_parquet(output_parquet, index=False)
-            new_added = len(combined_news) - len(old_news)
-            print(f"\n Đã lưu {len(combined_news)} bài báo thực tế vào: {output_parquet} (+{new_added} bài mới)\n")
-            return
-        except Exception as e:
-            print(f"  [Merge News Warning] {e}")
-
-    df_news.drop_duplicates(subset=['article_id'], keep='last').sort_values(by=['published_at'], ascending=False).to_parquet(output_parquet, index=False)
-    print(f"\n Đã lưu {len(df_news)} bài báo thực tế 1 năm qua vào: {output_parquet}\n")
+    total_touched, new_added = merge_news_records(df_news, news_dir=NEWS_OUTPUT_DIR)
+    print(f"\n Đã lưu vào phân vùng tháng tại {NEWS_OUTPUT_DIR} ({total_touched} bài trong các tháng chạm, +{new_added} bài mới)\n")
 
 if __name__ == "__main__":
     import argparse

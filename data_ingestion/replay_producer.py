@@ -45,10 +45,12 @@ def get_kafka_producer():
 producer = get_kafka_producer()
 
 def _load_news_queue(limit: int = 50) -> list[dict]:
-    """Tải một số bài báo gần nhất từ Bronze News để phát xen kẽ khi demo luồng tin tức."""
-    news_file = os.path.join(BRONZE_NEWS_DIR, "historical_news.parquet")
-    if not os.path.exists(news_file):
-        news_file = os.path.join(SCRIPT_DIR, "historical_bronze", "news", "historical_news.parquet")
+    """Tải một số bài báo gần nhất từ Bronze News (ưu tiên phân vùng tháng mới nhất) để demo."""
+    news_files = sorted(glob.glob(os.path.join(BRONZE_NEWS_DIR, "year=*", "month=*", "news.parquet")))
+    if news_files:
+        news_file = news_files[-1]
+    else:
+        news_file = os.path.join(BRONZE_NEWS_DIR, "historical_news.parquet")
     if not os.path.exists(news_file):
         return []
     try:
@@ -62,16 +64,17 @@ def replay_market_data(speed_seconds: float = 2.0, loop: bool = False, max_bars:
     Phát lại dữ liệu lịch sử theo từng mốc thời gian (minute bar).
     speed_seconds=2 nghĩa là cứ 2 giây ngoài đời thực sẽ bắn 1 phút dữ liệu của toàn bộ các mã vào Kafka.
     """
-    stock_dir = BRONZE_STOCK_DIR if glob.glob(os.path.join(BRONZE_STOCK_DIR, "*_1m.parquet")) else FALLBACK_STOCK_DIR
-    files = sorted(glob.glob(os.path.join(stock_dir, "*_1m.parquet")))
+    month_dirs = sorted(glob.glob(os.path.join(BRONZE_STOCK_DIR, "year=*", "month=*")))
+    if month_dirs:
+        files = sorted(glob.glob(os.path.join(month_dirs[-1] if max_bars else os.path.join(BRONZE_STOCK_DIR, "year=*", "month=*"), "*_1m.parquet")))
+    else:
+        files = sorted(glob.glob(os.path.join(BRONZE_STOCK_DIR, "*_1m.parquet")))
     if not files:
-        files = sorted(glob.glob(os.path.join(stock_dir, "*.parquet")))
-    if not files:
-        print(f"[Cảnh báo] Chưa có dữ liệu lịch sử tại: {stock_dir}!")
-        print("Hãy chạy 'python backfill_history.py' trước để tạo dữ liệu.")
+        print(f"[Cảnh báo] Chưa có dữ liệu lịch sử tại: {BRONZE_STOCK_DIR}!")
+        print("Hãy chạy 'python backfill_vn30_3y_1m.py' trước để tạo dữ liệu.")
         return
 
-    print(f"[Replay Engine] Đang tải {len(files)} tệp Parquet từ {stock_dir}...")
+    print(f"[Replay Engine] Đang tải {len(files)} tệp Parquet từ {BRONZE_STOCK_DIR}...")
     dfs = []
     for f in files:
         try:

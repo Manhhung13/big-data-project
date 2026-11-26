@@ -155,19 +155,18 @@ def fetch_symbol_3y_1m(symbol: str = "FPT", years: int = 3, chunk_days: int = 30
     full_df = full_df.drop_duplicates(subset=['timestamp'], keep='last')
     full_df = full_df.sort_values(by=['timestamp']).reset_index(drop=True)
 
-    # Lưu ra Parquet Bronze
-    full_df.to_parquet(output_file, index=False)
-    file_size_mb = os.path.getsize(output_file) / (1024 * 1024)
+    # Lưu ra Parquet Bronze phân vùng theo tháng
+    from bronze_storage import merge_stock_records
+    touched_rows, added_rows = merge_stock_records(full_df, stock_dir=STOCK_OUTPUT_DIR)
     duration_sec = time.time() - t0
 
     print("\n=================================================================")
     print(f" HOÀN TẤT THU THẬP {years} NĂM NẾN 1 PHÚT CHO {symbol}!")
-    print(f"   - Tổng số nến 1m     : {len(full_df):,} dòng dữ liệu".replace(",", "."))
+    print(f"   - Tổng nến mới ghi   : {len(full_df):,} dòng (+{added_rows:,} mới)".replace(",", "."))
     print(f"   - Mốc thời gian đầu  : {full_df['timestamp'].iloc[0]}")
     print(f"   - Mốc thời gian cuối : {full_df['timestamp'].iloc[-1]}")
-    print(f"   - Dung lượng Parquet : {file_size_mb:.2f} MB")
     print(f"   - Thời gian thực thi : {duration_sec:.1f} giây")
-    print(f"   - Vị trí tệp lưu     : {output_file}")
+    print(f"   - Thư mục phân vùng  : {STOCK_OUTPUT_DIR}")
     print("=================================================================\n")
     print("5 nến đầu tiên:")
     print(full_df.head(5)[['symbol', 'timestamp', 'open', 'high', 'low', 'close', 'volume']])

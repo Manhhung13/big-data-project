@@ -1,7 +1,7 @@
 import os
 import sys
 import time
-import uuid
+import glob
 import argparse
 from datetime import datetime, timedelta
 import requests
@@ -15,6 +15,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
         pass
 
 from config import SYMBOLS, BRONZE_STOCK_DIR, HEADERS, TZ_VN
+from bronze_storage import merge_stock_records
 
 os.makedirs(BRONZE_STOCK_DIR, exist_ok=True)
 
@@ -22,12 +23,6 @@ http_session = requests.Session()
 _adapter = HTTPAdapter(pool_connections=16, pool_maxsize=16)
 http_session.mount("https://", _adapter)
 http_session.mount("http://", _adapter)
-
-
-def _atomic_write_parquet(df: pd.DataFrame, final_path: str):
-    tmp_path = f"{final_path}.{uuid.uuid4().hex[:8]}.tmp"
-    df.to_parquet(tmp_path, index=False, compression="snappy")
-    os.replace(tmp_path, final_path)
 
 
 def fetch_chunk_tradingview(symbol: str, start_dt: datetime, end_dt: datetime) -> pd.DataFrame:
@@ -103,17 +98,16 @@ def fetch_chunk_tradingview(symbol: str, start_dt: datetime, end_dt: datetime) -
 
 def crawl_symbol_1m(symbol: str, days: int = 1095, chunk_days: int = 30, skip_if_complete: bool = False) -> tuple[int, int]:
     """
-    Thu thập nến 1m trong `days` ngày gần nhất cho 1 mã cổ phiếu và gộp (idempotent) vào {SYMBOL}_1m.parquet.
-    Trả về (tổng số dòng trong file, số dòng mới được thêm).
+    Thu thập nến 1m trong `days` ngày gần nhất cho 1 mã cổ phiếu và gộp (idempotent)
+    vào phân vùng theo tháng `year=YYYY/month=MM/{SYMBOL}_1m.parquet`.
     """
-    output_file = os.path.join(BRONZE_STOCK_DIR, f"{symbol}_1m.parquet")
-
-    if skip_if_complete and os.path.exists(output_file):
+    existing_files = sorted(glob.glob(os.path.join(BRONZE_STOCK_DIR, "year=*", "month=*", f"{symbol}_1m.parquet")))
+    if skip_if_complete and existing_files:
         try:
-            existing_df = pd.read_parquet(output_file, columns=["timestamp"])
-            if len(existing_df) >= 100000:
-                print(f"  [Đã tồn tại] Mã {symbol} đã có sẵn {len(existing_df):,} nến. Bỏ qua.", flush=True)
-                return len(existing_df), 0
+            existing_rows = sum(len(pd.read_parquet(f, columns=["timestamp"])) for f in existing_files)
+            if existing_rows >= 100000:
+                print(f"  [Đã tồn tại] Mã {symbol} đã có sẵn {existing_rows:,} nến. Bỏ qua.", flush=True)
+                return existing_rows, 0
         except Exception:
             pass
 
@@ -138,34 +132,18 @@ def crawl_symbol_1m(symbol: str, days: int = 1095, chunk_days: int = 30, skip_if
 
     new_df = pd.concat(all_chunks, ignore_index=True)
     new_df["timestamp"] = new_df["timestamp"].astype(str)
+    new_df = new_df.drop_duplicates(subset=["timestamp"], keep="last").sort_values("timestamp").reset_index(drop=True)
 
-    if os.path.exists(output_file):
-        old_df = pd.read_parquet(output_file)
-        old_len = len(old_df)
-        combined = pd.concat([old_df, new_df], ignore_index=True)
-        combined["timestamp"] = combined["timestamp"].astype(str)
-        combined = combined.drop_duplicates(subset=["timestamp"], keep="last").sort_values("timestamp").reset_index(drop=True)
-        _atomic_write_parquet(combined, output_file)
-        added = max(0, len(combined) - old_len)
-        total_rows = len(combined)
-        first_ts = combined["timestamp"].iloc[0][:10]
-        last_ts = combined["timestamp"].iloc[-1][:16]
-    else:
-        full_df = new_df.drop_duplicates(subset=["timestamp"], keep="last").sort_values("timestamp").reset_index(drop=True)
-        _atomic_write_parquet(full_df, output_file)
-        added = len(full_df)
-        total_rows = len(full_df)
-        first_ts = full_df["timestamp"].iloc[0][:10]
-        last_ts = full_df["timestamp"].iloc[-1][:16]
-
-    size_mb = os.path.getsize(output_file) / (1024 * 1024)
+    touched_rows, added = merge_stock_records(new_df, stock_dir=BRONZE_STOCK_DIR)
     elapsed = time.time() - t0
+    first_ts = new_df["timestamp"].iloc[0][:10]
+    last_ts = new_df["timestamp"].iloc[-1][:16]
     print(
-        f"  -> {symbol}: Tổng {total_rows:,} nến (+{added:,} mới, {size_mb:.2f} MB) "
+        f"  -> {symbol}: Ghi phân vùng tháng ({touched_rows:,} dòng vùng chạm, +{added:,} mới) "
         f"trong {elapsed:.1f}s | {first_ts} -> {last_ts}",
         flush=True,
     )
-    return total_rows, added
+    return touched_rows, added
 
 
 def main():
